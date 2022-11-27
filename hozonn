@@ -1,0 +1,8 @@
+client.on('message', async message => {
+   if (message.author.bot) return
+   
+   // worker.jsで公開したtokenize関数を別スレッドで実行する
+   const tokens = await pool.exec('tokenize', [message.content])
+	
+   message.channel.send(tokens.map(token => token.surface_form).join(' '))
+ })
